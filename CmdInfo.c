@@ -1,4 +1,5 @@
 #include "exec.h"
+#include "libft/libft.h"
 
 typedef struct paht
 {
@@ -9,6 +10,13 @@ typedef struct paht
 } path_info;
 
 
+void free_mem(char **var)
+{
+	int i = 0;
+	while (var[i])
+		free(var[i++]);
+	free(var);
+}
 
 static char	**extruct_paths(char **env)
 {
@@ -67,7 +75,7 @@ static int	is_valid_cmd(char **path)
 			return (i);
 		i++;
 	}
-	return (0);
+	return (-1);
 }
 
 char	*get_path_cmd(char **env, char *cmd)
@@ -84,8 +92,11 @@ char	*get_path_cmd(char **env, char *cmd)
 	else
 		info.paths = join_paths_cmd(extruct_paths(env), cmd);
 	info.valid_cmd = is_valid_cmd(info.paths);
-    if (info.valid_cmd)
-        return (NULL);
+	if (info.valid_cmd)
+	{
+		free_mem(info.paths);
+		return (ft_strdup("null"));
+	}
 	temp1 = ft_strdup(info.paths[info.valid_cmd]);
 	free_mem(info.paths);
 	return (temp1);

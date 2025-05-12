@@ -10,14 +10,21 @@ int count_cmd(char **cmd)
     return i;
 }
 
-char    *get_arg(char *cmd)
+char    **get_arg(t_cmd *cmd)
 {
+    t_word_list *temp;
     char **arg;
-    int     num_arg;
+    int    i; 
 
-    arg = ft_split(cmd, ' ');
-    num_arg = count_cmd(arg);
-    arg[num_arg] = NULL;
+    i = 1;
+    temp = cmd->args;
+    arg[0] = cmd->name->str;
+    while (temp)
+    {
+        arg[i++] = temp->word->str;
+        temp = temp->next;
+    }
+    arg[i] = NULL;
 
     return (arg);
 }
